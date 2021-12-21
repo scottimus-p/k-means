@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "helpers.h"
-#include "kmeans_kernel.h"
+#include "kmeans_kernels.h"
 
 #define THREADS_PER_BLOCK 96
 

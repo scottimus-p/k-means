@@ -1,4 +1,4 @@
-#include "kmeans_kernel.h"
+#include "kmeans_kernels.h"
 
 #include "kmeans.h"
 #include <argparse.h>
