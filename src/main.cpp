@@ -30,7 +30,6 @@ int main(int argc, char **argv)
     if (opts.use_cuda)
     {
         runInfo = run_kmeans_cuda(centroids, data, labels, opts, n_vals);
-        std::cout << "15" << std::endl;
     }
     else
     {
