@@ -1,6 +1,8 @@
 #ifndef __HELPERS_H__
 #define __HELPERS_H__
 
+#include <cmath>
+
 #include <argparse.h>
 #include <double2d.h>
 
@@ -16,6 +18,11 @@ void printdata(double2d &data);
 #if __CUDACC__
 __host__ __device__
 #endif
-double calcDistance(double *a, double *b, int dataDimension);
+double calcSquareDistance(double *a, double *b, int dataDimension);
+
+inline double calcDistance(double *a, double *b, int dataDimension)
+{
+    return sqrt(calcSquareDistance(a, b, dataDimension));
+}
 
 #endif
