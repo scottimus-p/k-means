@@ -94,6 +94,8 @@ struct double2d
         {
             delete [] data;
         }
+
+        data = nullptr;
     }
 
     #if __CUDACC__

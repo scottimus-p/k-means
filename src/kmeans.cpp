@@ -7,6 +7,7 @@
 #include "kmeans.h"
 #include "helpers.h"
 
+
 std::pair<int, std::chrono::milliseconds> run_kmeans_sequential(double2d &centroids, double2d &data, int *labels, const options_t &opts, int n_vals)
 {
     int dim = opts.dims;
@@ -20,12 +21,14 @@ std::pair<int, std::chrono::milliseconds> run_kmeans_sequential(double2d &centro
 
     auto start = std::chrono::high_resolution_clock::now();
 
+    if (iterations >= opts.max_num_iter)
+    {
+        done = true;
+    }
+
     while (!done)
     {
-        for (int i = 0; i < k; i++)
-        {
-            memcpy(&old_centroids(i, 0), &centroids(i, 0), sizeof(double) * dim);
-        }
+        memcpy(old_centroids.data, centroids.data, sizeof(double) * centroids.dim1 * centroids.dim2);
 
         find_nearest_centroids(labels, data, centroids, n_vals, dim, k);
 
@@ -33,7 +36,7 @@ std::pair<int, std::chrono::milliseconds> run_kmeans_sequential(double2d &centro
 
         iterations++;
 
-        if (iterations > opts.max_num_iter || has_converged(old_centroids, centroids, k, dim, opts.threshold))
+        if (iterations >= opts.max_num_iter || has_converged(old_centroids, centroids, k, dim, opts.threshold))
         {
             done = true;
         }

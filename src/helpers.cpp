@@ -10,7 +10,6 @@ int readfile(double2d &data, const options_t &opts)
     // Open file
     std::ifstream in;
     in.open(opts.in_file);
-    //in.open("../inputs/random-n2048-d16-c16.txt");
 
     // Get num vals
     int n_vals = 0;
@@ -105,7 +104,7 @@ void printdata(double2d &data)
 #if __CUDACC__
 __host__ __device__
 #endif
-double calcDistance(double *a, double *b, int dataDimension)
+double calcSquareDistance(double *a, double *b, int dataDimension)
 {
     double distance = 0;
 
