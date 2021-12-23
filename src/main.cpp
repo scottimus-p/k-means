@@ -36,9 +36,6 @@ int main(int argc, char **argv)
         runInfo = run_kmeans_sequential(centroids, data, labels, opts, n_vals);
     }
 
-    delete [] labels;
-    labels = nullptr;
-
     auto end = std::chrono::high_resolution_clock::now();
     auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
@@ -68,5 +65,8 @@ int main(int argc, char **argv)
         }
     }
 
+    delete [] labels;
+    labels = nullptr;
+    
     return 0;
 }

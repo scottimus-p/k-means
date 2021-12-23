@@ -72,7 +72,7 @@ void initializeRandomCentroids(double2d &centroids, double2d &data, int n_vals, 
 }
 
 
-bool has_converged(double2d &prev_centroids, double2d &curr_centroids, int numCentroids, int dim, double threshold)
+bool hasConverged(double2d &prev_centroids, double2d &curr_centroids, int numCentroids, int dim, double threshold)
 {
     for (int i = 0; i < numCentroids; i++)
     {
@@ -87,7 +87,7 @@ bool has_converged(double2d &prev_centroids, double2d &curr_centroids, int numCe
 }
 
 
-void printdata(double2d &data)
+void printData(double2d &data)
 {
     for (int i = 0; i < data.dim1; i++)
     {

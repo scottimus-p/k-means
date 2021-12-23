@@ -60,12 +60,7 @@ std::pair<int, std::chrono::milliseconds> run_kmeans_cuda(double2d &centroids, d
     while (!done)
     {
         // 2.a) on the host, move the "current" position of the centroids, to the "previous" position of the centroids
-        //for (int i = 0; i < k; i++)
-        //{
-            //memcpy(&old_centroids(i, 0), &centroids(i, 0), sizeof(double) * dim);
-
-            memcpy(old_centroids.data, centroids.data, sizeof(double) * k * dim);
-        //}
+        memcpy(old_centroids.data, centroids.data, sizeof(double) * k * dim);
 
         cudaMemcpy(centroidsDevice, centroids.data, sizeof(double) * k * dim, cudaMemcpyHostToDevice);
         cudaDeviceSynchronize();
@@ -82,7 +77,7 @@ std::pair<int, std::chrono::milliseconds> run_kmeans_cuda(double2d &centroids, d
 
         iterations++;
 
-        if (iterations >= opts.max_num_iter || has_converged(old_centroids, centroids, k, dim, opts.threshold))
+        if (iterations >= opts.max_num_iter || hasConverged(old_centroids, centroids, k, dim, opts.threshold))
         {
             done = true;
         }
@@ -269,7 +264,7 @@ void setDevice()
     cudaGetDeviceCount(&count);
 
     int maxCores = 0;
-    int whichDevice;
+    int whichDevice = 0;
 
     for (int i = 0; i < count; i++)
     {

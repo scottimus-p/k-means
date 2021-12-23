@@ -36,7 +36,7 @@ std::pair<int, std::chrono::milliseconds> run_kmeans_sequential(double2d &centro
 
         iterations++;
 
-        if (iterations >= opts.max_num_iter || has_converged(old_centroids, centroids, k, dim, opts.threshold))
+        if (iterations >= opts.max_num_iter || hasConverged(old_centroids, centroids, k, dim, opts.threshold))
         {
             done = true;
         }
@@ -58,7 +58,9 @@ void find_nearest_centroids(int *labels, double2d &data, double2d &centroids, in
 
         for (int j = 0; j < numCentroids; j++)
         {
-            double distance = calcDistance(&data(i, 0), &centroids(j, 0), dim);
+            // finding the nearest squared distance is equivalent to find the nearest distance
+            // so save time by not taking the sqrt
+            double distance = calcSquareDistance(&data(i, 0), &centroids(j, 0), dim);
 
             if (distance < closest_distance)
             {
