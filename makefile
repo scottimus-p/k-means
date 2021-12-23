@@ -8,19 +8,16 @@ EXEC = ./bin/kmeans
 
 CUDAC = nvcc -ccbin $(CC)
 
-all: clean sequential
+all: clean kmeans
 
-sequential:
-	$(CC) -I$(INC)  $(SRCS) -D SEQUENTIAL -std=c++17 -O3 -o ./bin/kmeans_sequential
-
-cuda:
-	$(CUDAC) $(OPTS) -rdc=true $(SRCS) ./src/kmeans_cuda.cu ./src/kmeans_kernels.cu -I$(INC) $(ARCH) -o ./bin/kmeans_cuda
+kmeans:
+	$(CUDAC) $(OPTS) -rdc=true $(SRCS) ./src/kmeans_cuda.cu ./src/kmeans_kernels.cu -I$(INC) $(ARCH) -o ./bin/kmeans
 
 test:
 	$(CUDAC) -rdc=true ./tests/unittest.cu ./src/kmeans_cuda.cu ./src/kmeans_kernels.cu ./src/helpers.cpp ./src/rng.cpp -I$(INC) -o ./bin/test
 
 debug:
-	$(CUDAC) -Xcompiler -O0 -g -rdc=true $(SRCS) ./src/kmeans_cuda.cu ./src/kmeans_kernels.cu -I$(INC) $(ARCH) -o ./bin/kmeans_cuda
+	$(CUDAC) -Xcompiler -O0 -g -rdc=true $(SRCS) ./src/kmeans_cuda.cu ./src/kmeans_kernels.cu -I$(INC) $(ARCH) -o ./bin/kmeans
 
 clean:
 	rm -f ./bin/*
