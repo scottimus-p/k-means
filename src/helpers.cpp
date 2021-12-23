@@ -106,12 +106,21 @@ __host__ __device__
 #endif
 double calcSquareDistance(double *a, double *b, int dataDimension)
 {
-    double distance = 0;
+    double distance0 = 0;
+    double distance1 = 0;
 
-    for (int i = 0; i < dataDimension; i++)
+    auto stop = dataDimension - dataDimension % 2;
+
+    for (int i = 0; i < stop; i += 2)
     {
-        distance += (a[i] - b[i]) * (a[i] - b[i]);
+        distance0 += (a[i] - b[i]) * (a[i] - b[i]);
+        distance1 += (a[i+1] - b[i+1]) * (a[i+1] - b[i+1]);
     }
 
-    return distance;
+    if (dataDimension % 2 == 1)
+    {
+        distance0 += (a[dataDimension - 1] - a[dataDimension - 1]) * (a[dataDimension - 1] - a[dataDimension - 1]);
+    }
+
+    return distance0 + distance1;
 }
