@@ -9,14 +9,14 @@ The code for this project is licensed under the MIT License. Refer to [LICENSE](
 The algorithm may be run in either a single-threaded, sequential CPU-only implementation or in a parallel GPU implementation. By default, the sequential implementation is run, but using the `--cuda` flag will run the parallel implementation (see below for supported GPUs).
 
 ### Flags
-`-k` specifies the number of clusters to group the data into
-`-d` tells the algorithm how many dimensions each data point has
-`-i` is the file path for the input data
-`-m` specifies the maximum number of iterations to run
-`-s` a seed for the random number generator for initializing the random initial locations of the clusters
-`-t` specifies a stopping threshold (see algorithm description below for the purpose of this)
-`-c` an optional flag to output which cluster each data point belongs to (default output is to only display the location for each of the final clusters)
-`--cuda` an optional flag to run the algorithm on a GPU (default is to run it on the CPU)
+`-k` specifies the number of clusters to group the data into  
+`-d` tells the algorithm how many dimensions each data point has  
+`-i` is the file path for the input data  
+`-m` specifies the maximum number of iterations to run  
+`-s` a seed for the random number generator for initializing the random initial locations of the clusters  
+`-t` specifies a stopping threshold (see algorithm description below for the purpose of this)  
+`-c` an optional flag to output which cluster each data point belongs to (default output is to only display the location for each of the final clusters)  
+`--cuda` an optional flag to run the algorithm on a GPU (default is to run it on the CPU)  
 
 ### Supported GPUs
 The GPU codes are written in CUDA. As such, only Nvidia GPUs are supported. The included [makefile](https://github.com/scottimus-p/k-means/blob/main/makefile) compiles the code with CUDA compute capability 7.5. See https://developer.nvidia.com/cuda-gpus to determine supported GPU models. Modifying the `-arch` flag in the makefile to an older compute capability may allow some older GPUs to be supported as well.
