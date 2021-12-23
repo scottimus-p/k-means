@@ -2,7 +2,7 @@ CC = g++
 SRCS = ./src/*.cpp
 CU_SRCS = ./src/*.cu
 INC = ./src/
-OPTS = -Xcompiler -O3
+OPTS = -Xcompiler -mavx -O3
 ARCH = -arch=sm_75
 EXEC = ./bin/kmeans
 

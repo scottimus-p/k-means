@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <immintrin.h> 
 
 #include "helpers.h"
 
@@ -106,21 +107,39 @@ __host__ __device__
 #endif
 double calcSquareDistance(double *a, double *b, int dataDimension)
 {
-    double distance0 = 0;
-    double distance1 = 0;
+    auto stop = dataDimension - dataDimension % 4;
 
-    auto stop = dataDimension - dataDimension % 2;
+    __m256d avx_a, avx_b, avx_d, avx_d2, avx_sum;
 
-    for (int i = 0; i < stop; i += 2)
+    avx_sum = _mm256_setzero_pd();
+
+    for (int i = 0; i < stop; i += 4)
     {
-        distance0 += (a[i] - b[i]) * (a[i] - b[i]);
-        distance1 += (a[i+1] - b[i+1]) * (a[i+1] - b[i+1]);
+        avx_a = _mm256_loadu_pd(a + i);
+        avx_b = _mm256_loadu_pd(b + i);
+
+        avx_d = _mm256_sub_pd(avx_a, avx_b);
+
+        avx_d2 = _mm256_mul_pd(avx_d, avx_d);
+
+        avx_sum = _mm256_add_pd(avx_sum, avx_d2);
     }
 
-    if (dataDimension % 2 == 1)
+    alignas(32) double result[] = {0, 0, 0, 0};
+
+    _mm256_store_pd(result, avx_sum);
+
+    switch (dataDimension % 4)
     {
-        distance0 += (a[dataDimension - 1] - a[dataDimension - 1]) * (a[dataDimension - 1] - a[dataDimension - 1]);
+    case 3:
+        result[2] += (a[dataDimension - 3] - b[dataDimension - 3]) * (a[dataDimension - 3] - b[dataDimension - 3]);
+        [[fallthrough]];
+    case 2:
+        result[1] += (a[dataDimension - 2] - b[dataDimension - 2]) * (a[dataDimension - 2] - b[dataDimension - 2]);
+        [[fallthrough]];
+    case 1:
+        result[0] += (a[dataDimension - 1] - b[dataDimension - 1]) * (a[dataDimension - 1] - b[dataDimension - 1]);
     }
 
-    return distance0 + distance1;
+    return result[0] + result[1] + result[2] + result[3];
 }
